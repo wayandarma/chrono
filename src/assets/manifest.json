@@ -1,0 +1,71 @@
+{
+  "policy": "Only CC0/public domain (preferred) or CC BY with attribution. No personal-use-only or no-redistribution licenses: bundled files are downloadable. Every entry is verified individually before shipping.",
+  "assets": [
+    {
+      "id": "scenes-procedural",
+      "title": "Six animated scenes (Midnight City, Blue Hour Ocean, Misty Pines, Desert Dusk, Alpine Snow, Ink & Smoke)",
+      "kind": "scene",
+      "source": "Original work, generated in code (src/data/scenes.tsx)",
+      "author": "CHRONO project",
+      "license": "Same license as the CHRONO source code",
+      "licenseUrl": null,
+      "verifiedOn": "2026-10-30",
+      "notes": "Placeholders until licensed photos and video loops are verified."
+    },
+    {
+      "id": "ambient-synth",
+      "title": "Six ambient tracks (Rain, Ocean, Forest at Dawn, Soft Piano, Deep Space Drone, Café Murmur)",
+      "kind": "audio",
+      "source": "Original work, synthesized live with the Web Audio API (src/lib/audio.ts)",
+      "author": "CHRONO project",
+      "license": "Same license as the CHRONO source code",
+      "licenseUrl": null,
+      "verifiedOn": "2026-10-30",
+      "notes": "Placeholders until licensed recordings are verified."
+    },
+    {
+      "id": "alarm-tones",
+      "title": "Alarm tones (Soft chime, Rising pulse, Classic beep) and flip tick",
+      "kind": "audio",
+      "source": "Original work, synthesized with the Web Audio API (src/lib/audio.ts)",
+      "author": "CHRONO project",
+      "license": "Same license as the CHRONO source code",
+      "licenseUrl": null,
+      "verifiedOn": "2026-10-30",
+      "notes": null
+    },
+    {
+      "id": "font-archivo",
+      "title": "Archivo (clock digits)",
+      "kind": "font",
+      "source": "https://fonts.google.com/specimen/Archivo via @fontsource-variable/archivo",
+      "author": "Omnibus-Type",
+      "license": "SIL Open Font License 1.1",
+      "licenseUrl": "https://openfontlicense.org",
+      "verifiedOn": "2026-10-30",
+      "notes": null
+    },
+    {
+      "id": "font-manrope",
+      "title": "Manrope (interface)",
+      "kind": "font",
+      "source": "https://fonts.google.com/specimen/Manrope via @fontsource-variable/manrope",
+      "author": "Mikhail Sharanda",
+      "license": "SIL Open Font License 1.1",
+      "licenseUrl": "https://openfontlicense.org",
+      "verifiedOn": "2026-10-30",
+      "notes": null
+    },
+    {
+      "id": "font-instrument-serif",
+      "title": "Instrument Serif (headings)",
+      "kind": "font",
+      "source": "https://fonts.google.com/specimen/Instrument+Serif via @fontsource/instrument-serif",
+      "author": "Instrument",
+      "license": "SIL Open Font License 1.1",
+      "licenseUrl": "https://openfontlicense.org",
+      "verifiedOn": "2026-10-30",
+      "notes": null
+    }
+  ]
+}

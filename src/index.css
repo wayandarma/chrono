@@ -1,0 +1,293 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-archivo: 'Archivo Variable', ui-sans-serif, sans-serif;
+  --font-instrument: 'Instrument Serif', ui-serif, serif;
+  --font-manrope: 'Manrope Variable', ui-sans-serif, sans-serif;
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: oklch(0.16 0.01 250);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ------------------------------------------------------------------
+   Flip mechanics (shared). Skins set the custom properties.
+   Card = 4 layers: static top (new), static bottom (old),
+   falling top leaf (old), landing bottom leaf (new).
+------------------------------------------------------------------- */
+.flip {
+  --flip-w: 1ch;
+  --flip-h: 1.5em;
+  --flip-radius: 0.08em;
+  --flip-bg: oklch(0.22 0.01 60);
+  --flip-bg-bottom: var(--flip-bg);
+  --flip-fg: oklch(0.95 0.01 85);
+  --flip-gap: 0.012em;
+  --flip-gap-color: oklch(0.1 0 0 / 0.7);
+  --flip-dur: 600ms;
+  position: relative;
+  display: inline-block;
+  width: var(--flip-w);
+  height: var(--flip-h);
+  perspective: 6em;
+  color: var(--flip-fg);
+  font-variant-numeric: tabular-nums;
+  contain: layout paint;
+}
+
+.flip__half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+.flip__half--top {
+  top: 0;
+  background: var(--flip-bg);
+  border-radius: var(--flip-radius) var(--flip-radius) 0 0;
+  transform-origin: 50% 100%;
+}
+.flip__half--bottom {
+  bottom: 0;
+  background: var(--flip-bg-bottom);
+  border-radius: 0 0 var(--flip-radius) var(--flip-radius);
+  transform-origin: 50% 0%;
+}
+.flip__glyph {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--flip-h);
+  line-height: var(--flip-h);
+  text-align: center;
+}
+.flip__half--top .flip__glyph {
+  top: 0;
+}
+.flip__half--bottom .flip__glyph {
+  bottom: 0;
+}
+
+/* hinge seam */
+.flip::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - var(--flip-gap) / 2);
+  height: var(--flip-gap);
+  background: var(--flip-gap-color);
+  z-index: 5;
+}
+
+.flip__leaf-top {
+  z-index: 3;
+  animation: flip-top calc(var(--flip-dur) * 0.5) cubic-bezier(0.55, 0, 0.85, 0.35) forwards;
+}
+.flip__leaf-bottom {
+  z-index: 4;
+  transform: rotateX(90deg);
+  animation: flip-bottom calc(var(--flip-dur) * 0.5) cubic-bezier(0.2, 0.9, 0.3, 1.12)
+    calc(var(--flip-dur) * 0.5) forwards;
+}
+/* moving shadow cast by the falling leaf */
+.flip__leaf-top::after,
+.flip__static-bottom::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.flip__leaf-top::after {
+  background: linear-gradient(to bottom, transparent, oklch(0 0 0 / 0.45));
+  opacity: 0;
+  animation: shade-in calc(var(--flip-dur) * 0.5) ease-in forwards;
+}
+.flip__static-bottom.is-flipping::after {
+  background: oklch(0 0 0 / 0.35);
+  animation: shade-out var(--flip-dur) ease-out forwards;
+}
+
+@keyframes flip-top {
+  to {
+    transform: rotateX(-90deg);
+  }
+}
+@keyframes flip-bottom {
+  to {
+    transform: rotateX(0deg);
+  }
+}
+@keyframes shade-in {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes shade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Reduced motion: crossfade, no rotation */
+@media (prefers-reduced-motion: reduce) {
+  .flip__leaf-top,
+  .flip__leaf-bottom {
+    display: none;
+  }
+  .flip__static-top .flip__glyph,
+  .flip__static-bottom .flip__glyph {
+    animation: fade-in 300ms ease-out;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   CHRONO skin
+------------------------------------------------------------------- */
+.chrono {
+  --bar-h: clamp(56px, 8vh, 84px);
+  --on-accent: oklch(0.16 0.02 60);
+}
+.chrono-flip {
+  --flip-w: 0.72em;
+  --flip-h: 1.08em;
+  --flip-radius: 0.06em;
+  --flip-bg: var(--card);
+  --flip-bg-bottom: var(--card-b);
+  --flip-fg: var(--digit);
+  --flip-gap: 0.016em;
+  --flip-gap-color: oklch(0 0 0 / 0.55);
+  --flip-dur: 640ms;
+  font-family: var(--font-archivo);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 72;
+  border-radius: var(--flip-radius);
+  box-shadow:
+    inset 0 0.012em 0 oklch(1 0 0 / 0.08),
+    0 0.035em 0.09em oklch(0 0 0 / 0.5),
+    0 0.008em 0 oklch(0 0 0 / 0.45);
+}
+.chrono[data-face='wide'] .chrono-flip {
+  --flip-w: 0.8em;
+  font-variation-settings: 'wdth' 100;
+  font-weight: 600;
+}
+.chrono[data-glow='true'] .chrono-flip .flip__glyph {
+  text-shadow: 0 0 0.1em color-mix(in oklch, var(--digit), transparent 50%);
+}
+.digits-condensed {
+  font-family: var(--font-archivo);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 72;
+  font-variant-numeric: tabular-nums;
+}
+.legend {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tap {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.underline-accent {
+  position: relative;
+}
+.underline-accent::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 400ms var(--ease-out-expo);
+}
+.underline-accent:hover::after,
+.underline-accent[aria-pressed='true']::after,
+.underline-accent:focus-visible::after {
+  transform: scaleX(1);
+}
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.eq i {
+  width: 3px;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: bottom;
+  animation: eq 0.9s ease-in-out infinite alternate;
+}
+.eq i:nth-child(2) {
+  animation-delay: -0.3s;
+  animation-duration: 0.7s;
+}
+.eq i:nth-child(3) {
+  animation-delay: -0.6s;
+  animation-duration: 1.1s;
+}
+@keyframes eq {
+  from {
+    transform: scaleY(0.25);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+.soft-pulse {
+  animation: soft-pulse 2.4s ease-in-out infinite;
+}
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+.chrono input[type='range'] {
+  accent-color: var(--accent);
+}
+.chrono input[type='time']::-webkit-calendar-picker-indicator {
+  filter: var(--picker-filter);
+  opacity: 0.7;
+}
+.chrono :focus-visible:not([tabindex='-1']) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .eq i,
+  .soft-pulse {
+    animation: none;
+  }
+}
